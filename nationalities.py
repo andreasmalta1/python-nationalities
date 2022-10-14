@@ -108,8 +108,11 @@ def nations_played(url, competition):
     ax2.set_xlabel('Nations')
     ax2.set_ylabel('Goals')
 
+    fig.savefig(f'{competition}-nations.png')
+    plt.show()  
+
 # Combined top 5 leagues
-# Get nations colors
+# Add nation colours
 
 def main():
     pl_url = 'https://fbref.com/en/comps/9/nations/Premier-League-Nationalities'
