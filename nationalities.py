@@ -3,7 +3,21 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import random
 
-# figure(figsize=(8, 6), dpi=80)
+def dict_conversion(country):
+    countries = {'ar ARG': 'Argentina',
+                'ng NGA': 'Nigeria',
+                'dk DEN': 'Denmark',
+                'de GER': 'Germany',
+                'be BEL': 'Belgium',
+                'fr FRA': 'France',
+                'pt POR': 'Portugal',
+                'no NOR': 'Norway',
+                'br BRA': 'Brazil',
+                'eng ENG': 'England',
+                'es ESP': 'Spain',
+                'pl POL': 'Poland',
+                'it ITA': 'Italy'}
+    return countries.get(country)
 
 
 def show_plots():
@@ -29,7 +43,7 @@ def random_colour():
     return clr
 
 
-def nations_played(url):
+def nations_played(url, competition):
     html = pd.read_html(url, header=0)
     df = html[0]
     df["Nation"] = df["Nation"].str.split(" ", 1)
@@ -57,34 +71,25 @@ def nations_played(url):
     fig = plt.figure(figsize=(20, 10))
     fig.subplots_adjust(hspace=0.5)
     gs = GridSpec(nrows=3, ncols=1)
+    fig.suptitle(f'{competition.upper()} Nationalities', fontsize=16)
     
     ax0 = fig.add_subplot(gs[0, 0])
-    ax0.bar(df_players["Nation"], df_players["# Players"], color=random_colour())
-    for index, value in enumerate(df_times['# Players']):
-        plt.text(index - 0.1, value + 1, value)
+    bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=random_colour())
+    ax0.bar_label(bars)
     ax0.set_title('Number of players from each nation (Top 10)')
     ax0.set_xlabel('Nations')
     ax0.set_ylabel('# of Players')
 
     ax1 = fig.add_subplot(gs[1, 0])
-    ax1.bar(df_times["Nation"], df_times["Min"], color=random_colour())
-    for index, value in enumerate(df_times['Min']):
-        plt.text(index - 0.1, value + 1, value)
+    bars = ax1.bar(df_times["Nation"], df_times["Min"], color=random_colour())
+    ax1.bar_label(bars)
     ax1.set_title('Number of minutes played by nation (Top 10)')
     ax1.set_xlabel('Nations')
     ax1.set_ylabel('Minutes')
 
-    fig.savefig('full_figure.png')
-    plt.show()
-    
-
-
-
-# get goals data():
-def nations_goals():
-    goals_csv = 'epl_goals.csv'
+    goals_csv = f'{competition}_goals.csv'
     df = pd.read_csv(goals_csv, usecols = [2, 8])
-    df = df.rename(columns={'Nation': 'Nation', 'Gls▼': 'Goals'})
+    df = df.rename(columns={'Nation': 'Nation', 'Gls': 'Goals'})
     df.drop(df[df['Goals'] <= 0].index, inplace = True)
     df = df.astype({'Goals':'int'})
 
@@ -92,26 +97,25 @@ def nations_goals():
     df_sum = df_sum.sort_values(by=['Goals'])
     df_sum = df_sum.tail(10)
 
-    plt.bar(df_sum["Nation"], df_sum["Goals"])
-    for index, value in enumerate(df_sum['Goals']):
-        plt.text(index - 0.1, value + 1, value)
-    plt_titles("Number of goals scored from each nation (Top 10)", "Nations", "# of Players")
-    
+    for i, row in df_sum.iterrows():
+        country = dict_conversion(df_sum.at[i,'Nation'])
+        df_sum.at[i,'Nation'] = country
 
+    ax2 = fig.add_subplot(gs[2, 0])
+    bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=random_colour())
+    ax2.bar_label(bars)
+    ax2.set_title('Number of goals scored from each nation (Top 10)')
+    ax2.set_xlabel('Nations')
+    ax2.set_ylabel('Goals')
 
-# Nationailties represented in PL by mins
-# Nationailties represented in PL by # players
-# Order of nationalities by goals scored in PL
-
-# Nationailties represented in UCL by mins
-# Nationailties represented in UCL by # players
-# Order of nationalities by goals scored in PL
+# Combined top 5 leagues
+# Get nations colors
 
 def main():
     pl_url = 'https://fbref.com/en/comps/9/nations/Premier-League-Nationalities'
-    nations_played(pl_url)
+    nations_played(pl_url, 'epl')
     cl_url = 'https://fbref.com/en/comps/8/nations/Champions-League-Nationalities'
-    # nations_played(cl_url)
+    nations_played(cl_url, 'ucl')
 
 
 main()
