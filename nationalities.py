@@ -112,7 +112,19 @@ def nations_played(url, competition):
     fig = plt.figure(figsize=(20, 10))
     fig.subplots_adjust(hspace=0.5)
     gs = GridSpec(nrows=3, ncols=1)
-    fig.suptitle(f'{competition.upper()} Nationalities', fontsize=16)
+    if competition == 'epl':
+        comp_title = 'Premier League'
+    if competition == 'laliga':
+        comp_title = 'La Liga'
+    if competition == 'bundesliga':
+        comp_title = 'Bundesliga'
+    if competition == 'seriea':
+        comp_title = 'Serie A'
+    if competition == 'ligue1':
+        comp_title = 'Ligue 1'
+    if competition == 'ucl':
+        comp_title = 'Uefa Champions League'
+    fig.suptitle(f'{comp_title} Nationalities', fontsize=16)
     
     ax0 = fig.add_subplot(gs[0, 0])
     bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=random_colour())
@@ -158,18 +170,18 @@ def nations_played(url, competition):
 
 def main():
     pl_url = 'https://fbref.com/en/comps/9/nations/Premier-League-Nationalities'
-    nations_played(pl_url, 'epl')
-    cl_url = 'https://fbref.com/en/comps/8/nations/Champions-League-Nationalities'
-    nations_played(cl_url, 'ucl')
-    french_url = 'https://fbref.com/en/comps/13/nations/Ligue-1-Nationalities'
-    nations_played(french_url, 'ligue1')
-    bundesliga_url = 'https://fbref.com/en/comps/20/nations/Bundesliga-Nationalities'
-    nations_played(bundesliga_url, 'bundesliga')
-    italy_url = 'https://fbref.com/en/comps/11/nations/Serie-A-Nationalities'
-    nations_played(italy_url, 'seriea')
     liga_url = 'https://fbref.com/en/comps/12/nations/La-Liga-Nationalities'
+    bundesliga_url = 'https://fbref.com/en/comps/20/nations/Bundesliga-Nationalities'
+    italy_url = 'https://fbref.com/en/comps/11/nations/Serie-A-Nationalities'
+    french_url = 'https://fbref.com/en/comps/13/nations/Ligue-1-Nationalities'
+    cl_url = 'https://fbref.com/en/comps/8/nations/Champions-League-Nationalities'
+    
+    nations_played(pl_url, 'epl')
     nations_played(liga_url, 'laliga')
-
+    nations_played(french_url, 'ligue1')
+    nations_played(bundesliga_url, 'bundesliga')
+    nations_played(italy_url, 'seriea')
+    nations_played(cl_url, 'ucl')
 
 
 main()
