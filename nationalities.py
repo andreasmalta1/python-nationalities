@@ -29,27 +29,51 @@ def random_colour():
 
 def team_colours(col):
     primary_colour = {
-        "Arsenal": "#EF0107",
-        "Aston Villa": "#95BFE5",
-        "Brentford": "#E30613",
-        "Brighton": "#0057B8",
-        "Burnley": "#6C1D45",
-        "Chelsea": "#034694",
-        "Crystal Palace": "#1B458F",
-        "Everton": "#003399",
-        "Leeds United": "#FFCD00",
-        "Leicester City": "#003090",
-        "Liverpool": "#C8102E",
-        "Manchester City": "#6CABDD",
-        "Manchester Utd": "#DA291C",
-        "Newcastle Utd": "#241F20",
-        "Norwich City": "#FFF200",
-        "Southampton": "#D71920",
-        "Tottenham": "#132257",
-        "Watford": "#FBEE23",
-        "West Ham": "#7A263A",
-        "Wolves": "#FDB913",
-    }
+        "Argentina": "#43A1D5",
+        "Nigeria": "#008751",
+        "Denmark": "#C60C30",
+        "Germany": "#000000",
+        "Belgium": "#E30613",
+        "France": "#21304D",
+        "Portugal": "#E42518",
+        "Norway": "#C8102E",
+        "Brazil": "#FFDC02",
+        "England": "#000040",
+        "Spain": "#8B0D11",
+        "Poland": "#DC143C",
+        "Italy": "#0064AA",
+        "Chile": "#0039A6",
+        "Senegal": "#11A335",
+        "Morocco": "#17A376",
+        "Algeria": "#007229",
+        "Canada": "#C5281C",
+        "Suriname": "#377E3F",
+        "Japan": "#000555",
+        "Austria": "#ED2939",
+        "Netherlands": "#F36C21",
+        "Israel": "#0038B8",
+        "Serbia": "#B72E3E",
+        "Croatia": "#ED1C24",
+        "Uruguay": "#55B5E5",
+        "Republic of Ireland": "#169B62",
+        "Wales": "#AE2630",
+        "Scotland": "#004B84",
+        "Colombia": "#FCD116",
+        "Kosovo": "#244AA5",
+        "Czech Republic": "#ED1B2C",
+        "Switzerland": "#D52B1E",
+        "Albania": "#E41E20",
+        "Côte d'Ivoire": "#FF8200",
+        "Mali": "#FCD116",
+        "Cameroon": "#479A50"}
+
+    clr = []
+    for team in col:
+        if team in primary_colour:
+            clr.append(primary_colour[team])
+        else:
+            print(team)
+    return clr
 
 
 def dict_conversion(country):
@@ -71,8 +95,7 @@ def dict_conversion(country):
                 'ma MAR': 'Morocco',
                 'dz ALG': 'Algeria',
                 'ca CAN': 'Canada' ,
-                'ng NGA': 'Nigeria',
-                'sr SUR': 'Suriname ',
+                'sr SUR': 'Suriname',
                 'jp JPN': 'Japan',
                 'at AUT': 'Austria',
                 'nl NED': 'Netherlands',
@@ -127,14 +150,14 @@ def nations_played(url, competition):
     fig.suptitle(f'{comp_title} Nationalities', fontsize=16)
     
     ax0 = fig.add_subplot(gs[0, 0])
-    bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=random_colour())
+    bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=team_colours(df_players["Nation"]))
     ax0.bar_label(bars)
     ax0.set_title('Number of players from each nation (Top 10)')
     ax0.set_xlabel('Nations')
     ax0.set_ylabel('# of Players')
 
     ax1 = fig.add_subplot(gs[1, 0])
-    bars = ax1.bar(df_times["Nation"], df_times["Min"], color=random_colour())
+    bars = ax1.bar(df_times["Nation"], df_times["Min"], color=team_colours(df_times["Nation"]))
     ax1.bar_label(bars)
     ax1.set_title('Number of minutes played by nation (Top 10)')
     ax1.set_xlabel('Nations')
@@ -156,17 +179,16 @@ def nations_played(url, competition):
             df_sum.at[i,'Nation'] = country
 
     ax2 = fig.add_subplot(gs[2, 0])
-    bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=random_colour())
+    bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=team_colours(df_sum["Nation"]))
     ax2.bar_label(bars)
     ax2.set_title('Number of goals scored from each nation (Top 10)')
     ax2.set_xlabel('Nations')
     ax2.set_ylabel('Goals')
 
-    fig.savefig(f'{competition}-nations.png')
+    fig.savefig(f'images/{competition}-nations.png')
     plt.show()  
 
 # Combined top 5 leagues
-# Add nation colours
 
 def main():
     pl_url = 'https://fbref.com/en/comps/9/nations/Premier-League-Nationalities'
