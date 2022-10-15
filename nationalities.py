@@ -114,6 +114,7 @@ def nations_played(urls):
     df_total_times = pd.DataFrame(columns=['Nation','Min'])
     df_total_players = pd.DataFrame(columns=['Nation','# Players'])
     df_total_goals = pd.DataFrame(columns=['Nation','Goals'])
+    print(df_total_players)
     df = pd.DataFrame()
     
     for url in urls:
@@ -211,7 +212,23 @@ def nations_played(urls):
         # plt.show()
     
     df_total_players = df_total_players.groupby('Nation').sum()
-    print(df_total_players)
+    df_total_players = df_total_players.sort_values(by=["# Players"])
+    # print(df_total_players)
+    df_total_players = df_total_players.tail(10)
+    # Iterate on rows
+
+    fig = plt.figure(figsize=(20, 10))
+    fig.subplots_adjust(hspace=0.5)
+    gs = GridSpec(nrows=3, ncols=1)
+    fig.suptitle(f'Top 5 Nationalities', fontsize=16)
+    
+    ax0 = fig.add_subplot(gs[0, 0])
+    bars = ax0.bar(df_total_players["Nation"], df_total_players["# Players"], color=team_colours(df_total_players["Nation"]))
+    ax0.bar_label(bars)
+    ax0.set_title('Number of players from each nation (Top 10)')
+    ax0.set_xlabel('Nations')
+    ax0.set_ylabel('# of Players')
+    plt.show()
 
 # Combined top 5 leagues
 
