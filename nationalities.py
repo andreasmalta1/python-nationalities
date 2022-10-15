@@ -3,22 +3,6 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import random
 
-def dict_conversion(country):
-    countries = {'ar ARG': 'Argentina',
-                'ng NGA': 'Nigeria',
-                'dk DEN': 'Denmark',
-                'de GER': 'Germany',
-                'be BEL': 'Belgium',
-                'fr FRA': 'France',
-                'pt POR': 'Portugal',
-                'no NOR': 'Norway',
-                'br BRA': 'Brazil',
-                'eng ENG': 'England',
-                'es ESP': 'Spain',
-                'pl POL': 'Poland',
-                'it ITA': 'Italy'}
-    return countries.get(country)
-
 
 def show_plots():
     plt.savefig('my_plot.png')
@@ -41,6 +25,63 @@ def random_colour():
         each_clr = (r, b, g)
         clr.append(each_clr)
     return clr
+
+
+def team_colours(col):
+    primary_colour = {
+        "Arsenal": "#EF0107",
+        "Aston Villa": "#95BFE5",
+        "Brentford": "#E30613",
+        "Brighton": "#0057B8",
+        "Burnley": "#6C1D45",
+        "Chelsea": "#034694",
+        "Crystal Palace": "#1B458F",
+        "Everton": "#003399",
+        "Leeds United": "#FFCD00",
+        "Leicester City": "#003090",
+        "Liverpool": "#C8102E",
+        "Manchester City": "#6CABDD",
+        "Manchester Utd": "#DA291C",
+        "Newcastle Utd": "#241F20",
+        "Norwich City": "#FFF200",
+        "Southampton": "#D71920",
+        "Tottenham": "#132257",
+        "Watford": "#FBEE23",
+        "West Ham": "#7A263A",
+        "Wolves": "#FDB913",
+    }
+
+
+def dict_conversion(country):
+    countries = {'ar ARG': 'Argentina',
+                'ng NGA': 'Nigeria',
+                'dk DEN': 'Denmark',
+                'de GER': 'Germany',
+                'be BEL': 'Belgium',
+                'fr FRA': 'France',
+                'pt POR': 'Portugal',
+                'no NOR': 'Norway',
+                'br BRA': 'Brazil',
+                'eng ENG': 'England',
+                'es ESP': 'Spain',
+                'pl POL': 'Poland',
+                'it ITA': 'Italy',
+                'cl CHI': 'Chile',
+                'sn SEN': 'Senegal',
+                'ma MAR': 'Morocco',
+                'dz ALG': 'Algeria',
+                'ca CAN': 'Canada' ,
+                'ng NGA': 'Nigeria',
+                'sr SUR': 'Suriname ',
+                'jp JPN': 'Japan',
+                'at AUT': 'Austria',
+                'nl NED': 'Netherlands',
+                'il ISR': 'Israel',
+                'rs SRB': 'Serbia',
+                'hr CRO': 'Croatia',
+                'uy URU': 'Uruguay',
+                'xk KVX': 'Kosovo'}
+    return countries.get(country)
 
 
 def nations_played(url, competition):
@@ -99,7 +140,8 @@ def nations_played(url, competition):
 
     for i, row in df_sum.iterrows():
         country = dict_conversion(df_sum.at[i,'Nation'])
-        df_sum.at[i,'Nation'] = country
+        if country:
+            df_sum.at[i,'Nation'] = country
 
     ax2 = fig.add_subplot(gs[2, 0])
     bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=random_colour())
@@ -119,6 +161,15 @@ def main():
     nations_played(pl_url, 'epl')
     cl_url = 'https://fbref.com/en/comps/8/nations/Champions-League-Nationalities'
     nations_played(cl_url, 'ucl')
+    french_url = 'https://fbref.com/en/comps/13/nations/Ligue-1-Nationalities'
+    nations_played(french_url, 'ligue1')
+    bundesliga_url = 'https://fbref.com/en/comps/20/nations/Bundesliga-Nationalities'
+    nations_played(bundesliga_url, 'bundesliga')
+    italy_url = 'https://fbref.com/en/comps/11/nations/Serie-A-Nationalities'
+    nations_played(italy_url, 'seriea')
+    liga_url = 'https://fbref.com/en/comps/12/nations/La-Liga-Nationalities'
+    nations_played(liga_url, 'laliga')
+
 
 
 main()
