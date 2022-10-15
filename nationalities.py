@@ -128,7 +128,7 @@ def nations_played(url, competition):
     ax1.set_xlabel('Nations')
     ax1.set_ylabel('Minutes')
 
-    goals_csv = f'{competition}_goals.csv'
+    goals_csv = f'goals_csvs/{competition}_goals.csv'
     df = pd.read_csv(goals_csv, usecols = [2, 8])
     df = df.rename(columns={'Nation': 'Nation', 'Gls': 'Goals'})
     df.drop(df[df['Goals'] <= 0].index, inplace = True)
