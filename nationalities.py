@@ -178,9 +178,9 @@ def main():
     
     nations_played(pl_url, 'epl')
     nations_played(liga_url, 'laliga')
-    nations_played(french_url, 'ligue1')
     nations_played(bundesliga_url, 'bundesliga')
     nations_played(italy_url, 'seriea')
+    nations_played(french_url, 'ligue1')
     nations_played(cl_url, 'ucl')
 
 
