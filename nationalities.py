@@ -68,7 +68,8 @@ def team_colours(col):
         "Albania": "#E41E20",
         "Côte d'Ivoire": "#FF8200",
         "Mali": "#FCD116",
-        "Cameroon": "#479A50"}
+        "Cameroon": "#479A50",
+        "Ghana": "#D40023"}
 
     clr = []
     for team in col:
@@ -114,7 +115,6 @@ def nations_played(urls):
     df_total_times = pd.DataFrame(columns=['Nation','Min'])
     df_total_players = pd.DataFrame(columns=['Nation','# Players'])
     df_total_goals = pd.DataFrame(columns=['Nation','Goals'])
-    print(df_total_players)
     df = pd.DataFrame()
     
     for url in urls:
@@ -211,10 +211,13 @@ def nations_played(urls):
         fig.savefig(f'images/{competition}-nations.png')
         # plt.show()
     
-    df_total_players = df_total_players.groupby('Nation').sum()
+    # print(df_total_players)
+    
+    df_total_players = df_total_players.groupby('Nation', as_index=False).sum()
     df_total_players = df_total_players.sort_values(by=["# Players"])
     # print(df_total_players)
     df_total_players = df_total_players.tail(10)
+    
     # Iterate on rows
 
     fig = plt.figure(figsize=(20, 10))
@@ -228,6 +231,7 @@ def nations_played(urls):
     ax0.set_title('Number of players from each nation (Top 10)')
     ax0.set_xlabel('Nations')
     ax0.set_ylabel('# of Players')
+    fig.savefig(f'images/combined-number-nations.png')
     plt.show()
 
 # Combined top 5 leagues
