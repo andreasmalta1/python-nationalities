@@ -119,6 +119,19 @@ def nations_played(urls):
     
     for url in urls:
         competition = urls[url]
+        
+        if competition == 'epl':
+            comp_title = 'Premier League'
+        if competition == 'laliga':
+            comp_title = 'La Liga'
+        if competition == 'bundesliga':
+            comp_title = 'Bundesliga'
+        if competition == 'seriea':
+            comp_title = 'Serie A'
+        if competition == 'ligue1':
+            comp_title = 'Ligue 1'
+        if competition == 'ucl':
+            comp_title = 'Uefa Champions League'
 
         html = pd.read_html(url, header=0)
         df = html[0]
@@ -153,20 +166,6 @@ def nations_played(urls):
 
         df_times = df_times.tail(10)
         
-
-        if competition == 'epl':
-            comp_title = 'Premier League'
-        if competition == 'laliga':
-            comp_title = 'La Liga'
-        if competition == 'bundesliga':
-            comp_title = 'Bundesliga'
-        if competition == 'seriea':
-            comp_title = 'Serie A'
-        if competition == 'ligue1':
-            comp_title = 'Ligue 1'
-        if competition == 'ucl':
-            comp_title = 'Uefa Champions League'
-        
         fig = plt.figure(figsize=(20, 10))
         fig.subplots_adjust(hspace=0.5)
         gs = GridSpec(nrows=3, ncols=1)
@@ -192,6 +191,9 @@ def nations_played(urls):
         df.drop(df[df['Goals'] <= 0].index, inplace = True)
         df = df.astype({'Goals':'int'})
 
+        if competition != 'ucl':
+            df_total_goals = pd.concat([df_total_goals, df], ignore_index=True)
+
         df_sum = df.groupby('Nation')['Goals'].sum().reset_index()
         df_sum = df_sum.sort_values(by=['Goals'])
         df_sum = df_sum.tail(10)
@@ -209,21 +211,16 @@ def nations_played(urls):
         ax2.set_ylabel('Goals')
 
         fig.savefig(f'images/{competition}-nations.png')
-        # plt.show()
-    
-    # print(df_total_players)
-    
-    df_total_players = df_total_players.groupby('Nation', as_index=False).sum()
-    df_total_players = df_total_players.sort_values(by=["# Players"])
-    # print(df_total_players)
-    df_total_players = df_total_players.tail(10)
-    
-    # Iterate on rows
+        plt.show()
 
     fig = plt.figure(figsize=(20, 10))
     fig.subplots_adjust(hspace=0.5)
     gs = GridSpec(nrows=3, ncols=1)
-    fig.suptitle(f'Top 5 Nationalities', fontsize=16)
+    fig.suptitle(f'Top 5 Leagues Nationalities', fontsize=16)
+
+    df_total_players = df_total_players.groupby('Nation', as_index=False).sum()
+    df_total_players = df_total_players.sort_values(by=["# Players"])
+    df_total_players = df_total_players.tail(10)
     
     ax0 = fig.add_subplot(gs[0, 0])
     bars = ax0.bar(df_total_players["Nation"], df_total_players["# Players"], color=team_colours(df_total_players["Nation"]))
@@ -231,10 +228,37 @@ def nations_played(urls):
     ax0.set_title('Number of players from each nation (Top 10)')
     ax0.set_xlabel('Nations')
     ax0.set_ylabel('# of Players')
+
+    df_total_times = df_total_times.groupby('Nation', as_index=False).sum()
+    df_total_times = df_total_times.sort_values(by=["Min"])
+    df_total_times = df_total_times.tail(10)
+
+    ax1 = fig.add_subplot(gs[1, 0])
+    bars = ax1.bar(df_total_times["Nation"], df_total_times["Min"], color=team_colours(df_total_times["Nation"]))
+    ax1.bar_label(bars)
+    ax1.set_title('Minutes played from each nation (Top 10)')
+    ax1.set_xlabel('Nations')
+    ax1.set_ylabel('Minutes')
+
+    df_total_goals = df_total_goals.groupby('Nation', as_index=False).sum()
+    df_total_goals = df_total_goals.sort_values(by=["Goals"])
+    df_total_goals = df_total_goals.tail(10)
+
+    for i, row in df_total_goals.iterrows():
+            country = dict_conversion(df_total_goals.at[i,'Nation'])
+            if country:
+                df_total_goals.at[i,'Nation'] = country
+
+    ax2 = fig.add_subplot(gs[2, 0])
+    bars = ax2.bar(df_total_goals["Nation"], df_total_goals["Goals"], color=team_colours(df_total_goals["Nation"]))
+    ax2.bar_label(bars)
+    ax2.set_title('Goals scored from each nation (Top 10)')
+    ax2.set_xlabel('Nations')
+    ax2.set_ylabel('Minutes')
+    
     fig.savefig(f'images/combined-number-nations.png')
     plt.show()
 
-# Combined top 5 leagues
 
 def main():
     pl_url = 'https://fbref.com/en/comps/9/nations/Premier-League-Nationalities'
@@ -252,13 +276,6 @@ def main():
                     cl_url: 'ucl'}
     
     nations_played(league_urls)
-    
-    # nations_played(pl_url, 'epl')
-    # nations_played(liga_url, 'laliga')
-    # nations_played(bundesliga_url, 'bundesliga')
-    # nations_played(italy_url, 'seriea')
-    # nations_played(french_url, 'ligue1')
-    # nations_played(cl_url, 'ucl')
 
 
 main()
