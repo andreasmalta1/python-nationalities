@@ -3,8 +3,40 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 import random
 import warnings
+import undetected_chromedriver as uc
+from bs4 import BeautifulSoup
 
 warnings.filterwarnings("ignore")
+
+
+def get_goals(url):
+    chrome_options = uc.ChromeOptions()
+    chrome_options.add_argument("--disable-extensions")
+    chrome_options.add_argument("--headless")
+    driver = uc.Chrome(chrome_options=chrome_options)
+
+    driver.get(url)
+
+    source = driver.page_source
+    driver.quit()
+    soup = BeautifulSoup(source, 'lxml')
+
+    rows = soup.find("table", id='stats_shooting').find("tbody").find_all("tr")
+
+    df_goals = pd.DataFrame(columns=['Nation', 'Goals'])
+    nation = []
+    goals = []
+
+    for row in rows:
+        cells = row.find_all("td")
+        if cells:
+            nation.append(cells[1].get_text())
+            goals.append(cells[7].get_text())
+
+    for i in range(len(goals)):
+        df_goals.loc[i] = [nation[i], int(goals[i])]
+
+    return df_goals
 
 
 def show_plots():
@@ -107,7 +139,9 @@ def dict_conversion(country):
                 'rs SRB': 'Serbia',
                 'hr CRO': 'Croatia',
                 'uy URU': 'Uruguay',
-                'xk KVX': 'Kosovo'}
+                'xk KVX': 'Kosovo',
+                'ua UKR': 'Ukraine',
+                'gh GHA': 'Ghana'}
     return countries.get(country)
 
 
@@ -122,16 +156,22 @@ def nations_played(urls):
         
         if competition == 'epl':
             comp_title = 'Premier League'
+            goals_url = 'https://fbref.com/en/comps/9/shooting/Premier-League-Stats'
         if competition == 'laliga':
             comp_title = 'La Liga'
+            goals_url = 'https://fbref.com/en/comps/12/shooting/La-Liga-Stats'
         if competition == 'bundesliga':
             comp_title = 'Bundesliga'
+            goals_url = 'https://fbref.com/en/comps/20/shooting/Bundesliga-Stats'
         if competition == 'seriea':
             comp_title = 'Serie A'
+            goals_url = 'https://fbref.com/en/comps/11/shooting/Serie-A-Stats'
         if competition == 'ligue1':
             comp_title = 'Ligue 1'
+            goals_url = 'https://fbref.com/en/comps/13/shooting/Ligue-1-Stats'
         if competition == 'ucl':
             comp_title = 'Uefa Champions League'
+            goals_url = 'https://fbref.com/en/comps/8/shooting/Champions-League-Stats'
 
         html = pd.read_html(url, header=0)
         df = html[0]
@@ -185,11 +225,7 @@ def nations_played(urls):
         ax1.set_xlabel('Nations')
         ax1.set_ylabel('Minutes')
 
-        goals_csv = f'goals_csvs/{competition}_goals.csv'
-        df = pd.read_csv(goals_csv, usecols = [2, 8])
-        df = df.rename(columns={'Nation': 'Nation', 'Gls': 'Goals'})
-        df.drop(df[df['Goals'] <= 0].index, inplace = True)
-        df = df.astype({'Goals':'int'})
+        df = get_goals(goals_url)
 
         if competition != 'ucl':
             df_total_goals = pd.concat([df_total_goals, df], ignore_index=True)
@@ -211,7 +247,7 @@ def nations_played(urls):
         ax2.set_ylabel('Goals')
 
         fig.savefig(f'images/{competition}-nations.png')
-        plt.show()
+        # plt.show()
 
     fig = plt.figure(figsize=(20, 10))
     fig.subplots_adjust(hspace=0.5)
@@ -257,7 +293,7 @@ def nations_played(urls):
     ax2.set_ylabel('Minutes')
     
     fig.savefig(f'images/combined-number-nations.png')
-    plt.show()
+    # plt.show()
 
 
 def main():
@@ -278,4 +314,5 @@ def main():
     nations_played(league_urls)
 
 
-main()
+if __name__ == '__main__':
+    main()
