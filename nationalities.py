@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
-import random
 import warnings
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
@@ -37,29 +36,6 @@ def get_goals(url):
         df_goals.loc[i] = [nation[i], int(goals[i])]
 
     return df_goals
-
-
-def show_plots():
-    plt.savefig('my_plot.png')
-    plt.show()
-
-
-def plt_titles(plot_title, x_label, y_label):
-    plt.title(plot_title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    show_plots()
-
-
-def random_colour():
-    clr = []
-    for rnd in range(0, 10):
-        r = random.random()
-        b = random.random()
-        g = random.random()
-        each_clr = (r, b, g)
-        clr.append(each_clr)
-    return clr
 
 
 def team_colours(col):
