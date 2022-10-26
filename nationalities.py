@@ -79,7 +79,8 @@ def team_colours(col):
         "Cameroon": "#479A50",
         "Ghana": "#D40023",
         "Bosnia": "#002F6C",
-        "Ukraine": "#FFD700"}
+        "Ukraine": "#FFD700",
+        "Cameroon": "#479A50"}
 
     clr = []
     for team in col:
@@ -120,7 +121,8 @@ def dict_conversion(country):
                 'xk KVX': 'Kosovo',
                 'ua UKR': 'Ukraine',
                 'gh GHA': 'Ghana',
-                'ba BIH': 'Bosnia'}
+                'ba BIH': 'Bosnia',
+                'cm CMR': 'Cameroon'}
     return countries.get(country)
 
 
