@@ -271,7 +271,7 @@ def nations_played(urls):
     ax2.bar_label(bars)
     ax2.set_title('Goals scored from each nation (Top 10)')
     ax2.set_xlabel('Nations')
-    ax2.set_ylabel('Minutes')
+    ax2.set_ylabel('Goals')
     
     fig.savefig(f'images/combined-number-nations.png')
     # plt.show()
