@@ -80,7 +80,8 @@ def team_colours(col):
         "Ghana": "#D40023",
         "Bosnia": "#002F6C",
         "Ukraine": "#FFD700",
-        "Cameroon": "#479A50"}
+        "Cameroon": "#479A50",
+        "Turkey": "#E30A17"}
 
     clr = []
     for team in col:
@@ -153,6 +154,10 @@ def nations_played(urls):
         if competition == 'ucl':
             comp_title = 'Uefa Champions League'
             goals_url = 'https://fbref.com/en/comps/8/shooting/Champions-League-Stats'
+        if competition == 'uel':
+            comp_title = 'Uefa Europa League'
+            goals_url = 'https://fbref.com/en/comps/19/2022/shooting/2022-Stats'
+
 
         html = pd.read_html(url, header=0)
         df = html[0]
@@ -173,7 +178,7 @@ def nations_played(urls):
 
         df_players = df.sort_values(by=["# Players"])
         df_players = df_players.drop(['Min'], axis=1)
-        if competition != 'ucl':
+        if competition != 'ucl' and competition != 'uel':
             df_total_players = pd.concat([df_total_players, df_players], ignore_index=True)
         
         df_players = df_players.tail(10)
@@ -182,7 +187,7 @@ def nations_played(urls):
         df_times = df_times.dropna()
         df_times = df_times.sort_values(by=["Min"])
         df_times = df_times.drop(['# Players'], axis=1)
-        if competition != 'ucl':
+        if competition != 'ucl' and competition != 'uel':
             df_total_times = pd.concat([df_total_times, df_times], ignore_index=True)
 
         df_times = df_times.tail(10)
@@ -208,7 +213,7 @@ def nations_played(urls):
 
         df = get_goals(goals_url)
 
-        if competition != 'ucl':
+        if competition != 'ucl' and competition != 'uel':
             df_total_goals = pd.concat([df_total_goals, df], ignore_index=True)
 
         df_sum = df.groupby('Nation')['Goals'].sum().reset_index()
@@ -273,7 +278,7 @@ def nations_played(urls):
     ax2.set_xlabel('Nations')
     ax2.set_ylabel('Goals')
     
-    fig.savefig(f'images/combined-number-nations.png')
+    fig.savefig(f'images/top-5-leagues-combined.png')
     # plt.show()
 
 
@@ -284,16 +289,19 @@ def main():
     italy_url = 'https://fbref.com/en/comps/11/nations/Serie-A-Nationalities'
     french_url = 'https://fbref.com/en/comps/13/nations/Ligue-1-Nationalities'
     cl_url = 'https://fbref.com/en/comps/8/nations/Champions-League-Nationalities'
+    uel_url = 'https://fbref.com/en/comps/19/2022/nations/2022-Nationalities'
 
     league_urls = {pl_url: 'epl',
                     liga_url: 'laliga',
                     bundesliga_url: 'bundesliga',
                     italy_url: 'seriea',
                     french_url: 'ligue1',
-                    cl_url: 'ucl'}
+                    cl_url: 'ucl',
+                    uel_url: 'uel'}
     
     nations_played(league_urls)
 
 
 if __name__ == '__main__':
     main()
+    
