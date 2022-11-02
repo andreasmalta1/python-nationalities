@@ -82,7 +82,8 @@ def team_colours(col):
         "Ukraine": "#FFD700",
         "Cameroon": "#479A50",
         "Turkey": "#E30A17",
-        "Switzerland": "#FF0000"}
+        "Switzerland": "#FF0000",
+        "Egypt": "#C8102E"}
 
     clr = []
     for team in col:
@@ -125,7 +126,8 @@ def dict_conversion(country):
                 'gh GHA': 'Ghana',
                 'ba BIH': 'Bosnia',
                 'cm CMR': 'Cameroon',
-                'ch SUI': 'Switzerland'}
+                'ch SUI': 'Switzerland',
+                'eg EGY': 'Egypt'}
     return countries.get(country)
 
 
@@ -307,3 +309,5 @@ def main():
 if __name__ == '__main__':
     main()
     
+#TODO: Add current gameweek/matchday
+#TODO: Add background for each image accoridng to leage
