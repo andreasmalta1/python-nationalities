@@ -4,6 +4,7 @@ from matplotlib.gridspec import GridSpec
 import warnings
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
+from PIL import Image, ImageEnhance
 
 warnings.filterwarnings("ignore")
 
@@ -236,7 +237,17 @@ def nations_played(urls):
         ax2.set_xlabel('Nations')
         ax2.set_ylabel('Goals')
 
+        # fig.savefig(f'images/{competition}-nations.png', transparent=True)
         fig.savefig(f'images/{competition}-nations.png')
+        # if f'logo/{competition}.png' or f'logo/{competition}.jpg':
+        #     img1 = Image.open('logos/epl (2).jpg')
+        #     img2 = Image.open('images/epl-nations.png')
+        #     img1.resize((2000, 1000))
+        #     img1.paste(img2, (0,0), mask = img2)
+        #     img1.save('hello2.png')
+        
+        # break
+
         # plt.show()
 
     fig = plt.figure(figsize=(20, 10))
@@ -282,7 +293,7 @@ def nations_played(urls):
     ax2.set_xlabel('Nations')
     ax2.set_ylabel('Goals')
     
-    fig.savefig(f'images/top-5-leagues-combined.png')
+    fig.savefig(f'images/top-5-leagues-combined.png', transparent=True)
     # plt.show()
 
 
@@ -308,6 +319,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-#TODO: Add current gameweek/matchday
-#TODO: Add background for each image accoridng to leage
+
+# Make text bold and slighlty bold
+# Make only image in centre
