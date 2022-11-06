@@ -200,21 +200,28 @@ def nations_played(urls):
         fig = plt.figure(figsize=(20, 10))
         fig.subplots_adjust(hspace=0.5)
         gs = GridSpec(nrows=3, ncols=1)
-        fig.suptitle(f'{comp_title} Nationalities', fontsize=16)
+        fig.suptitle(f'{comp_title} Nationalities', fontsize=22)
+        fig.patch.set_facecolor('mediumpurple')
         
         ax0 = fig.add_subplot(gs[0, 0])
-        bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=team_colours(df_players["Nation"]))
-        ax0.bar_label(bars)
-        ax0.set_title('Number of players from each nation (Top 10)')
-        ax0.set_xlabel('Nations')
-        ax0.set_ylabel('# of Players')
+        bars = ax0.bar(df_players["Nation"], df_players["# Players"], color=team_colours(df_players["Nation"]), linewidth=10)
+        ax0.bar_label(bars, size=16)
+        ax0.set_title('Number of players from each nation (Top 10)', size=20)
+        ax0.set_xlabel('Nations', size=16)
+        ax0.set_ylabel('# of Players', size=16)
+        ax0.set_facecolor('mediumpurple')
+        for label in (ax0.get_xticklabels() + ax0.get_yticklabels()):
+            label.set_fontsize(14)
 
         ax1 = fig.add_subplot(gs[1, 0])
-        bars = ax1.bar(df_times["Nation"], df_times["Min"], color=team_colours(df_times["Nation"]))
-        ax1.bar_label(bars)
-        ax1.set_title('Number of minutes played by nation (Top 10)')
-        ax1.set_xlabel('Nations')
-        ax1.set_ylabel('Minutes')
+        bars = ax1.bar(df_times["Nation"], df_times["Min"], color=team_colours(df_times["Nation"]), linewidth=10)
+        ax1.bar_label(bars, size=16)
+        ax1.set_title('Number of minutes played by nation (Top 10)', size=20)
+        ax1.set_xlabel('Nations', size=16)
+        ax1.set_ylabel('Minutes', size=16)
+        ax1.set_facecolor('mediumpurple')
+        for label in (ax1.get_xticklabels() + ax1.get_yticklabels()):
+            label.set_fontsize(14)
 
         df = get_goals(goals_url)
 
@@ -231,11 +238,14 @@ def nations_played(urls):
                 df_sum.at[i,'Nation'] = country
 
         ax2 = fig.add_subplot(gs[2, 0])
-        bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=team_colours(df_sum["Nation"]))
-        ax2.bar_label(bars)
-        ax2.set_title('Number of goals scored from each nation (Top 10)')
-        ax2.set_xlabel('Nations')
-        ax2.set_ylabel('Goals')
+        bars = ax2.bar(df_sum["Nation"], df_sum["Goals"], color=team_colours(df_sum["Nation"]), linewidth=10)
+        ax2.bar_label(bars, size=16)
+        ax2.set_title('Number of goals scored from each nation (Top 10)', size=20)
+        ax2.set_xlabel('Nations', size=16)
+        ax2.set_ylabel('Goals', size=16)
+        ax2.set_facecolor('mediumpurple')
+        for label in (ax2.get_xticklabels() + ax2.get_yticklabels()):
+            label.set_fontsize(14)
 
         # fig.savefig(f'images/{competition}-nations.png', transparent=True)
         fig.savefig(f'images/{competition}-nations.png')
@@ -246,7 +256,12 @@ def nations_played(urls):
         #     img1.paste(img2, (0,0), mask = img2)
         #     img1.save('hello2.png')
         
-        # break
+        # img1 = Image.open('images/epl-nations.png')
+        # img2 = Image.open('logos/pl.png')
+        # img1.paste(img2, (0,0), mask = img1)
+        # img1.save('hello2.png')
+
+        break
 
         # plt.show()
 
