@@ -248,13 +248,18 @@ def nations_played(urls):
         for label in (ax2.get_xticklabels() + ax2.get_yticklabels()):
             label.set_fontsize(14)
 
+        ax2.annotate('Stats from fbref.com', (0,0), (0,-40), fontsize=12, 
+              xycoords='axes fraction', textcoords='offset points', va='top')
+        ax2.annotate('Data Viz by Andreas Calleja @andreascalleja', (0,0), (0,-60), fontsize=12, 
+              xycoords='axes fraction', textcoords='offset points', va='top')
+
         fig.savefig(f'images/{competition}-nations.jpg')
 
     fig = plt.figure(figsize=(20, 10))
     fig.subplots_adjust(hspace=0.5)
     gs = GridSpec(nrows=3, ncols=1)
     fig.suptitle(f'Top 5 Leagues Nationalities', fontsize=22)
-    fig.patch.set_facecolor('aquamarine')
+    fig.patch.set_facecolor('beige')
 
     df_total_players = df_total_players.groupby('Nation', as_index=False).sum()
     df_total_players = df_total_players.sort_values(by=["# Players"])
@@ -266,7 +271,7 @@ def nations_played(urls):
     ax0.set_title('Number of players from each nation (Top 10)', size=20)
     ax0.set_xlabel('Nations', size=16)
     ax0.set_ylabel('# of Players', size=16)
-    ax0.set_facecolor('aquamarine')
+    ax0.set_facecolor('beige')
     for label in (ax0.get_xticklabels() + ax0.get_yticklabels()):
             label.set_fontsize(14)
 
@@ -280,7 +285,7 @@ def nations_played(urls):
     ax1.set_title('Minutes played from each nation (Top 10)', size=20)
     ax1.set_xlabel('Nations', size=16)
     ax1.set_ylabel('Minutes', size=16)
-    ax1.set_facecolor('aquamarine')
+    ax1.set_facecolor('beige')
     for label in (ax1.get_xticklabels() + ax1.get_yticklabels()):
             label.set_fontsize(14)
 
@@ -299,9 +304,14 @@ def nations_played(urls):
     ax2.set_title('Goals scored from each nation (Top 10)', size=20)
     ax2.set_xlabel('Nations', size=16)
     ax2.set_ylabel('Goals', size=16)
-    ax2.set_facecolor('aquamarine')
+    ax2.set_facecolor('beige')
     for label in (ax2.get_xticklabels() + ax2.get_yticklabels()):
             label.set_fontsize(14)
+
+    ax2.annotate('Stats from fbref.com', (0,0), (0,-40), fontsize=12, 
+              xycoords='axes fraction', textcoords='offset points', va='top')
+    ax2.annotate('Data Viz by Andreas Calleja @andreascalleja', (0,0), (0,-60), fontsize=12, 
+            xycoords='axes fraction', textcoords='offset points', va='top')
     
     fig.savefig(f'images/top-5-leagues-combined.jpg')
 
@@ -343,4 +353,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# Make race chart
+# Try to add small logos with white background
