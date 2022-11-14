@@ -4,7 +4,6 @@ from matplotlib.gridspec import GridSpec
 import warnings
 import undetected_chromedriver as uc
 from bs4 import BeautifulSoup
-from PIL import Image, ImageEnhance
 
 warnings.filterwarnings("ignore")
 
